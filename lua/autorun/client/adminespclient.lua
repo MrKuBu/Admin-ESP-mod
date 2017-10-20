@@ -1,83 +1,75 @@
-// Creating adminESP client functions by MrKuBu
+-- Creating adminESP client functions by MrKuBu
 
---[[------------------------------------------------------------------------------------------------------------------------------------
+--[[--------------------------------------
+	Customize the script (code :D)
+----------------------------------------]]
 
-											Customize the script (code :D)
+local adminESPConfig = {}
 
---------------------------------------------------------------------------------------------------------------------------------------]]
+adminESPConfig.command = '!adminesp' --	Set the chat command. (example !esp)
 
-local adminESPConfig	=	{}
+adminESPConfig.ranks = {			 -- Set the ranks able to use. (can also be set to false)
+	'owner',
+	'superadmin',
+	'admin',
+	'headadmin',
+	'founder'
+}
 
-adminESPConfig.command	=	'!adminesp'					//	Set the chat command. (example !esp)
-
-adminESPConfig.ranks	=	{
-							'owner',
-							'superadmin',			// Set the ranks able to use. (can also be set to false)
-							'admin',
-							'headadmin',
-							'founder'
-							}
-							
-adminESPConfig.jobs		=	{
-							'Owner on duty',
-							'Superadmin on duty',			// Set the jobs able to use. (can also be set to false)
-							'Admin on duty'
-							}	
-			
-							
-adminESPConfig.info				=		true				// set if it should show info
-adminESPConfig.infocol1		=	Color(0, 161, 255, 255)		// set default color of info (Name)
-adminESPConfig.infocol3		=	Color(150, 150, 150, 255)		// set default color of info (info)
- 
-								
-adminESPConfig.infoscol1	=	{
-								owner 		= Color(255, 0, 0, 255),
-								superadmin 	= Color(255, 50, 50, 255),       // Add special colors for different ranks.
-								admin		= Color(255, 100, 100, 255)
-								}
-								
-adminESPConfig.infocol2		=	Color(0, 0, 0, 255)			// outline color of info
-adminESPConfig.infodis	=	false							// show distance?
-adminESPConfig.infomon	=	false							// show money?
-adminESPConfig.infohp	=	true							// show health?
-adminESPConfig.infowep	=	true							// show weapon?
-
-adminESPConfig.chams			=		true				// set if it should show chams
-adminESPConfig.chamsc		=	Color(0, 161, 255, 255)				// set cham player default color
-
-adminESPConfig.chamssc		=	{
-								owner 		= Color(255, 0, 0, 255),
-								superadmin 	= Color(255, 50, 50, 255),       // Add special colors for different ranks.
-								admin		= Color(255, 100, 100, 255)
-								}
-								
-
-adminESPConfig.chamswep		=	true						// show weapon?
-adminESPConfig.chamswepc	=	Color(255, 255, 255, 255)				// set cham weapon color
-
---------------------------------------------------------------------------------------------------------------------------------------
---																																	--
---------------------------------------------------------------------------------------------------------------------------------------
+adminESPConfig.jobs		=	{ 		-- Set the jobs able to use. (can also be set to false)
+	'Owner on duty',
+	'Superadmin on duty',
+	'Admin on duty'
+}	
 
 
+adminESPConfig.info			=	true						-- set if it should show info
+adminESPConfig.infocol1		=	Color(0, 161, 255, 255)		-- set default color of info (Name)
+adminESPConfig.infocol3		=	Color(150, 150, 150, 255)	-- set default color of info (info)
+
+	
+adminESPConfig.infoscol1	=	{	-- Add special colors for different ranks.
+	owner 		= Color(255, 0, 0, 255),
+	superadmin 	= Color(255, 50, 50, 255),
+	admin		= Color(255, 100, 100, 255)
+}
+
+adminESPConfig.infocol2		=	Color(0, 0, 0, 255)			-- outline color of info
+adminESPConfig.infodis	=	true							-- show distance?
+adminESPConfig.infomon	=	false							-- show money? - This only worked DarkRP
+adminESPConfig.infohp	=	true							-- show health?
+adminESPConfig.infowep	=	true							-- show weapon?
+
+adminESPConfig.chams			=		true				-- set if it should show chams
+adminESPConfig.chamsc		=	Color(0, 161, 255, 255)		-- set cham player default color
 
 
+adminESPConfig.chamssc		=	{	-- Add special colors for different ranks.
+	owner 		= Color(255, 0, 0, 255),	 	
+	superadmin 	= Color(255, 50, 50, 255),
+	admin		= Color(255, 100, 100, 255)
+}
 
---[[------------------------------------------------------------------------------------------------------------------------------------
 
-								Actual script, don't touch this unless you know what you are doing.
-
---------------------------------------------------------------------------------------------------------------------------------------]]
+adminESPConfig.chamswep		=	true						 -- show weapon?
+adminESPConfig.chamswepc	=	Color(255, 255, 255, 255)	 -- set cham weapon color
 
 
-local AESP			=		{}
+--[[--------------------------------------
+	End customize
+----------------------------------------]]
 
+--[[-------------------------------------------------------------------
+	Actual script, don't touch this unless you know what you are doing.
+---------------------------------------------------------------------]]
+
+local AESP = {}
 
 AESP.Matinfo = {
-["$basetexture"] = 'models/debug/debugwhite',
-["$model"]       = 1,
-["$nocull"]      = 1,
-["$ignorez"]     = 1
+	["$basetexture"] = 'models/debug/debugwhite',
+	["$model"]       = 1,
+	["$nocull"]      = 1,
+	["$ignorez"]     = 1
 }
 
 AESP.Mat = (CreateMaterial( "chams", "VertexLitGeneric", AESP.Matinfo )) 
@@ -85,7 +77,6 @@ AESP.Mat = (CreateMaterial( "chams", "VertexLitGeneric", AESP.Matinfo ))
 function AESP.Print ( txt )
 	chat.AddText( Color(0, 161, 255, 255), '[MK-esp] ', Color( 255, 255, 255, 255 ), txt)
 end
-
 
 function AESP.CheckCommand (ply, txt)
 	if ply == LocalPlayer() and txt == adminESPConfig.command then
@@ -106,7 +97,7 @@ function AESP.EspToggle()
 		AESP.ESP = true
 		AESP.Print ( 'ON' )
 		
-		// Info
+		-- Info
 		hook.Add('HUDPaint', 'AESP.Info', function()
 			for k,v in pairs(player.GetAll()) do
 				if v != LocalPlayer() then
@@ -183,7 +174,7 @@ function AESP.EspToggle()
 			end
 		end)
 		
-	// Chams
+	-- Chams
 	hook.Add('CalcView', 'StopVisualRecoil', AESP.StopVisualRecoil)
 	hook.Add('RenderScreenspaceEffects', 'Chams', function()
 		cam.Start3D( LocalPlayer():EyePos(), LocalPlayer():EyeAngles() )
@@ -224,7 +215,34 @@ function AESP.EspToggle()
 		hook.Remove('RenderScreenspaceEffects', 'Chams')
 	end
 end
+
+--[[---------------------------------
+	Locals, don't touch this please
+-----------------------------------]]
+local Addon 	= "Admin Esp Mod"
+local Version 	= "1.4"
+local Autor 	= "MrKuBu"
+local WorkShop 	= "https://steamcommunity.com/sharedfiles/filedetails/?id=740196784"
+local VK 		= "https://vk.com/mrkubu"
+local YouTube 	= "https://youtube.com/MrKuBu"
+local MyProject = "https://vk.com/awesomiumrp"
+local GitHub    = "https://github.com/MrKuBu"
+--[[------------------------------
+	End locals
+---------------------------------]]
  
 hook.Add('OnPlayerChat', 'CheckCommand', AESP.CheckCommand)
 
-print ( "[MK-esp] AdminESP loaded" ) 
+
+
+MsgC(Color(255,0,0), "------->\n")
+MsgC(Color(0,255,0), Addon.."\n")
+MsgC(Color(0,255,0), "By ")MsgC(Color(255,0,0), Autor.."\n")
+MsgC(Color(0,255,0), "Version: ")MsgC(Color(0,0,255), Version.."\n")
+MsgC(Color(0,255,0), "My Links: \n")
+MsgC(Color(255,255,0), "  Addon: ")MsgC(Color(0,255,0), WorkShop.."\n")
+MsgC(Color(255,255,0), "  My VK: ")MsgC(Color(0,255,0), VK.."\n")
+MsgC(Color(255,255,0), "  My YouTube: ")MsgC(Color(0,255,0), YouTube.."\n")
+MsgC(Color(255,255,0), "  AwesomiumRP: ")MsgC(Color(0,255,0), MyProject.."\n")
+MsgC(Color(255,255,0), "  GitHub: ")MsgC(Color(0,255,0), GitHub.."\n")
+MsgC(Color(255,0,0), "------->\n")
